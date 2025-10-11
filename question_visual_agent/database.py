@@ -14,15 +14,19 @@ def get_db():
     )
 
 def fetch_question(question_id):
-    """Fetch question with grade"""
+    """Fetch question with grade, subject, and topic"""
     conn = get_db()
     cur = conn.cursor()
     
     query = """
     SELECT q.question_id, q.question_text, q.option_a, q.option_b, 
-           q.option_c, q.option_d, q.difficulty, e.grade
+           q.option_c, q.option_d, q.difficulty, 
+           e.grade, e.exam,
+           sec.section,
+           s.topic, s.subtopic
     FROM questions q
     JOIN syllabus s ON q.syllabus_id = s.syllabus_id
+    JOIN sections sec ON s.section_id = sec.section_id
     JOIN exam_overview e ON s.exam_overview_id = e.exam_overview_id
     WHERE q.question_id = %s;
     """
