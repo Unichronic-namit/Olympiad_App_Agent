@@ -35,11 +35,12 @@ def analyze_question(question_id):
 # CONTEXT
 - Student Grade Level: {q['grade']} (Age: {q['grade'] + 5} years approximately)
 - Difficulty Level: {q['difficulty']}
-- Exam: {q['exam']}
+- Exam: {q['exam']} Olympiad Exam
+- Level: Level {q['level']} Olympiad Exam
 - Subject/Section: {subject_context}
 
 # YOUR TASK
-Analyze if this question needs visual representation and create detailed DALL-E image generation prompts.
+Analyze if this question needs visual representation and create detailed image generation prompts.
 
 # ANALYSIS CRITERIA
 
@@ -114,7 +115,7 @@ Provide a JSON response with these exact fields:
    - Explain educational benefit or why images aren't needed
 
 5. **question_image_prompt** (string or null):
-   - If needed, create a DETAILED DALL-E prompt (50-100 words)
+   - If needed, create a DETAILED prompt (50-100 words)
    - Specify: style, colors, perspective, composition, mood, lighting
    - Include age-appropriate elements
    - Consider the subject context: {subject_context}
@@ -136,7 +137,7 @@ Provide a JSON response with these exact fields:
 
 # PROMPT ENGINEERING GUIDELINES FOR IMAGE GENERATION
 
-When creating DALL-E prompts, include:
+When creating prompts, include:
 
 **Required Elements:**
 1. **Subject**: What is the main focus? (Consider: {subject_context})
@@ -185,7 +186,7 @@ For Grade 8 (Scientific concept):
 - 15 years experience in educational content design
 - Deep understanding of child cognitive development
 - Expertise in visual learning theory
-- Professional prompt engineering skills for DALL-E
+- Professional prompt engineering skills
 - Knowledge of age-appropriate content design
 
 Your responses are:
@@ -195,7 +196,7 @@ Your responses are:
 - Professionally formatted
 - Always in valid JSON format
 
-You create DALL-E prompts that are:
+You create prompts that are:
 - Highly detailed (50-100 words)
 - Specific about style, colors, perspective
 - Age-appropriate

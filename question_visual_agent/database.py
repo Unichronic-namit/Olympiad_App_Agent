@@ -21,7 +21,7 @@ def fetch_question(question_id):
     query = """
     SELECT q.question_id, q.question_text, q.option_a, q.option_b, 
            q.option_c, q.option_d, q.difficulty, 
-           e.grade, e.exam,
+           e.grade, e.exam, e.level,
            sec.section,
            s.topic, s.subtopic
     FROM questions q
