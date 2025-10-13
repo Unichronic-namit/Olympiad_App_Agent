@@ -30,68 +30,50 @@ def analyze_question(question_id):
         subject_context += f" ({q['subtopic']})"
     
     # Enhanced prompt with detailed instructions
-    prompt = f"""You are an expert Educational Content Visualization Specialist with expertise in child psychology, visual learning, and educational design. Your task is to analyze whether visual aids will enhance student learning for a specific question.
+    prompt = f"""You are an expert Educational Content Visualization Specialist with 15+ years of experience in creating educational imagery and prompt engineering for AI image generation systems.
 
 # CONTEXT
 - Student Grade Level: {q['grade']} (Age: {q['grade'] + 5} years approximately)
 - Difficulty Level: {q['difficulty']}
-- Exam: {q['exam']} Olympiad Exam
-- Level: Level {q['level']} Olympiad Exam
+- Exam: {q['exam']} Olympiad
+- Level: {q['level']}
 - Subject/Section: {subject_context}
 
-# YOUR TASK
-Analyze if this question needs visual representation and create detailed image generation prompts.
+# YOUR MISSION
+1. Analyze if this question needs visual aids for better learning
+2. If yes, create EXTREMELY DETAILED, SPECIFIC image generation prompts that will work with ANY AI image generator (Midjourney, Stable Diffusion, DALL-E, etc.)
 
-# ANALYSIS CRITERIA
+# GRADE-SPECIFIC VISUAL REQUIREMENTS
 
-## Grade-Specific Guidelines:
 **Grades 1-3 (Ages 6-8):**
-- Concrete thinkers - need simple, colorful, real-world visuals
-- Use cartoon/illustration style
-- Bright colors, clear shapes, minimal text
-- Focus on familiar objects and concepts
+- Style: Bright cartoon illustrations, simple shapes
+- Colors: Primary colors (red, blue, yellow), high saturation
+- Complexity: Single subject, minimal background elements
+- Text: None or very minimal labels
+- Mood: Cheerful, friendly, welcoming
 
 **Grades 4-5 (Ages 9-10):**
-- Transitioning to abstract thinking
-- Semi-realistic illustrations work well
-- Can handle simple diagrams with labels
-- Benefit from step-by-step visual explanations
+- Style: Semi-realistic illustrations with some detail
+- Colors: Vibrant but natural color palettes
+- Complexity: Main subject + 2-3 supporting elements
+- Text: Simple labels acceptable
+- Mood: Engaging, informative
 
 **Grades 6-8 (Ages 11-13):**
-- Can process complex information
-- Realistic images or detailed diagrams
-- Spatial concepts, technical drawings helpful
-- Graphs, charts, and infographics useful
+- Style: Realistic illustrations or clean diagrams
+- Colors: Natural, balanced, professional
+- Complexity: Multiple elements, layered information
+- Text: Labels, annotations, brief descriptions
+- Mood: Professional, educational
 
 **Grades 9-10 (Ages 14-15):**
-- Abstract thinkers
-- Only need visuals for:
-  * Complex scientific diagrams
-  * Mathematical graphs
-  * Technical schematics
-  * Architectural/engineering concepts
-- Most text-based questions don't need images
+- Style: Technical, photorealistic, or schematic
+- Colors: Professional, accurate to reality
+- Complexity: Detailed, multi-layered information
+- Text: Technical labels, measurements, annotations
+- Mood: Academic, precise
 
-## Content Type Analysis:
-- **Physical Objects**: Always benefit from images (animals, tools, devices, buildings)
-- **Abstract Concepts**: Rarely need images unless they can be represented symbolically
-- **Spatial Relationships**: Always benefit from diagrams
-- **Processes/Sequences**: Benefit from step-by-step illustrations
-- **Comparisons**: Side-by-side visuals helpful
-- **Identification Tasks**: Essential to have images
-
-## Fairness Rules (CRITICAL):
-1. If ANY option needs an image, ALL options MUST have images
-2. All option images must use the SAME visual style (illustration/photo/diagram)
-3. All option images must have the SAME level of detail
-4. Images must NOT reveal the correct answer through:
-   - Different quality levels
-   - Different artistic styles
-   - Different color schemes
-   - Different levels of realism
-5. Keep all images conceptually neutral
-
-# QUESTION TO ANALYZE
+# QUESTION ANALYSIS
 
 **Question ID:** {q['question_id']}
 **Question Text:** {q['question_text']}
@@ -102,78 +84,120 @@ B) {q['option_b']}
 C) {q['option_c']}
 D) {q['option_d']}
 
-# OUTPUT REQUIREMENTS
+# CRITICAL RULES FOR VISUAL CONSISTENCY
 
-Provide a JSON response with these exact fields:
+1. **All option images MUST be identical in:**
+   - Visual style (cartoon/realistic/diagram)
+   - Image dimensions and framing
+   - Color saturation and tone
+   - Level of detail
+   - Background type and color
+   - Lighting conditions
+   - Perspective/camera angle
 
-1. **question_id** (integer): {q['question_id']}
-2. **grade** (integer): {q['grade']}
-3. **image_required** (boolean): true if images will enhance learning, false otherwise
-4. **reason** (string): 
-   - 2-3 sentences explaining your decision
-   - Reference the grade level, subject, and content type
-   - Explain educational benefit or why images aren't needed
+2. **Images must NOT give hints through:**
+   - Better quality for correct answer
+   - Different artistic styles
+   - More detail on one option
+   - Different color schemes
+   - Size variations
 
-5. **question_image_prompt** (string or null):
-   - If needed, create a DETAILED prompt (50-100 words)
-   - Specify: style, colors, perspective, composition, mood, lighting
-   - Include age-appropriate elements
-   - Consider the subject context: {subject_context}
-   - Example: "Educational illustration for grade {q['grade']} students showing [subject] in [style], [colors], [perspective], with [specific details], [lighting], [mood], high quality, clear details"
+# PROMPT STRUCTURE REQUIREMENTS
 
-6. **option_a_image_prompt** (string or null):
-   - Follow same structure as question_image_prompt
-   - Ensure consistency with other options if this is populated
-   - Must relate to: {q['option_a']}
+Each image prompt MUST include ALL these elements in this order:
+
+1. **SUBJECT** (What): Precisely describe the main object/concept
+   - Be specific: Not "a device" but "a wireless computer mouse with ergonomic design"
    
-7. **option_b_image_prompt** (string or null):
-   - Must relate to: {q['option_b']}
-   
-8. **option_c_image_prompt** (string or null):
-   - Must relate to: {q['option_c']}
-   
-9. **option_d_image_prompt** (string or null):
-   - Must relate to: {q['option_d']}
+2. **CONTEXT** (Why): Educational purpose
+   - Example: "for teaching grade 3 students about input devices"
 
-# PROMPT ENGINEERING GUIDELINES FOR IMAGE GENERATION
+3. **STYLE** (How): Artistic approach
+   - Specific styles: "flat design illustration", "photorealistic render", "technical line drawing"
+   - NOT vague: "nice drawing", "good image"
 
-When creating prompts, include:
+4. **COMPOSITION** (Layout):
+   - Camera angle: "straight-on view", "45-degree angle", "bird's eye view"
+   - Framing: "centered in frame", "occupying 70% of image"
+   - Position: "object positioned in center", "slightly left of center"
 
-**Required Elements:**
-1. **Subject**: What is the main focus? (Consider: {subject_context})
-2. **Style**: cartoon, illustration, realistic photo, diagram, infographic, sketch
-3. **Age-appropriateness**: "for grade {q['grade']} students", "child-friendly", "educational"
-4. **Colors**: "bright colors", "pastel tones", "natural colors", "high contrast"
-5. **Perspective**: "front view", "side view", "isometric", "top-down"
-6. **Background**: "white background", "simple background", "educational setting"
-7. **Detail level**: "simple and clear", "detailed with labels", "minimalist"
-8. **Composition**: "centered", "with space around", "close-up"
-9. **Quality markers**: "high quality", "sharp focus", "professional", "clear details"
+5. **COLORS** (Palette):
+   - Specific colors: "bright cherry red", "navy blue", "lime green"
+   - Color scheme: "monochromatic blue scheme", "complementary orange and blue"
+   - NOT vague: "colorful", "nice colors"
 
-**Example Good Prompts:**
+6. **BACKGROUND**:
+   - Specific: "solid white background", "soft gradient from light blue to white", "blurred classroom setting"
+   - NOT vague: "simple background"
 
-For Grade 2 (Shape identification):
-"Colorful educational illustration of a bright red triangle for grade 2 students, simple geometric shape with clean edges, solid color fill, centered on white background, child-friendly cartoon style, high contrast, clear and bold outline, professional educational material quality"
+7. **LIGHTING**:
+   - Type: "soft diffused lighting", "bright studio lighting", "natural daylight"
+   - Direction: "light from top-left", "evenly lit"
+   - Shadows: "minimal shadows", "soft drop shadow"
 
-For Grade 5 (Computer parts):
-"Semi-realistic educational illustration of a computer keyboard for grade 5 students, showing full keyboard layout with visible keys, modern design, neutral gray and black colors, front-facing perspective, simple white background, clear and detailed, professional textbook quality, well-lit, sharp focus"
+8. **DETAILS & TEXTURE**:
+   - Surface: "smooth plastic texture", "matte finish", "glossy surface"
+   - Details: "visible buttons", "brand logo removed", "clean edges"
 
-For Grade 8 (Scientific concept):
-"Detailed technical diagram of a computer circuit board for grade 8 students, realistic style showing electronic components, green PCB with gold circuits, isometric view, educational infographic style, labeled components, professional quality, clear details, technical illustration"
+9. **TECHNICAL SPECS**:
+   - Quality: "high resolution", "sharp focus", "8K quality"
+   - Format notes: "no text overlays", "no watermarks", "clean professional image"
 
-**Bad Prompts to Avoid:**
-- "a triangle" (too vague)
-- "keyboard" (no context or style)
-- "computer thing" (unclear subject)
-- "nice picture of mouse" (unprofessional, vague)
+10. **AGE-APPROPRIATE ELEMENTS**:
+    - For 1-5: "child-friendly", "non-threatening", "engaging and fun"
+    - For 6-10: "educational and clear", "professional quality"
 
-# IMPORTANT REMINDERS
-- Generate images ONLY when they genuinely enhance understanding
-- Maintain visual consistency across all options
-- Age-appropriate complexity and style
-- Clear, specific, detailed prompts for best results
-- Consider cognitive development stage of the target grade
-- Subject context is: {subject_context}"""
+# EXAMPLE EXCELLENT PROMPTS
+
+**Grade 2 - Computer Mouse (Option):**
+"A bright blue wireless computer mouse with rounded ergonomic shape, designed for teaching grade 2 students about input devices. Flat illustration style with bold outlines. Mouse positioned in center of frame, occupying 60% of image space, shown from 45-degree top-right angle. Solid white background with no shadows. Mouse colored in vibrant sky blue (#87CEEB) with darker blue (#4682B4) accent on scroll wheel. Two visible buttons clearly defined. Smooth cartoon-style rendering with minimal detail. Soft even lighting from top. Matte plastic texture appearance. High contrast against white background. Child-friendly and simple. No text, labels, or branding. Clean professional educational illustration. 8K resolution, sharp edges, vector-style quality."
+
+**Grade 5 - Plant Cell (Question):**
+"A detailed cross-section diagram of a plant cell for teaching grade 5 biology students. Semi-realistic scientific illustration style. Cell shown in center, taking up 80% of frame, with cutaway view revealing internal structures. Light green cell wall (#90EE90) as outer layer, cell membrane just inside in darker green (#228B22). Visible organelles: large central vacuole in pale blue (#E0F4FF), nucleus in light purple (#DDA0DD) with darker nucleolus, multiple green chloroplasts (#3CB371), mitochondria in pink (#FFB6C1), endoplasmic reticulum network in light yellow (#FFFACD). Each organelle clearly distinguished by color and shape. White background for clarity. Soft educational lighting from top-left creating gentle shadows. Labels removed (for educational testing). Clean line work, smooth gradients. Professional textbook quality. Medium detail level appropriate for grade 5. 4K resolution, crisp edges, scientific accuracy."
+
+**Grade 8 - Circuit Board (Question):**
+"Professional overhead photograph of a computer circuit board (motherboard) for teaching grade 8 technology students. Photorealistic style. Rectangular green PCB (printed circuit board) centered in frame, occupying 75% of image. Standard motherboard green color (#2F4F2F) with golden-yellow copper traces (#FFD700) creating complex pathways across surface. Multiple components visible: black rectangular RAM slots on left side, silver heat sinks on processors, small cylindrical capacitors in various colors, square microchips with visible pins. Shot from directly above (90-degree top-down view). Shallow depth of field with center in sharp focus, edges slightly softer. Bright white LED studio lighting from multiple angles eliminating harsh shadows. Clean professional tech photography. Glossy and matte surface textures visible. Extreme detail showing solder points and component labels. Modern contemporary hardware (2020s era). White background fading to light gray at edges. Technical accuracy essential. No hands or tools visible. Product photography quality. 8K resolution, macro photography sharpness."
+
+# BAD PROMPTS TO AVOID
+
+❌ "A colorful mouse" 
+   - Too vague, no style, no context
+
+❌ "Computer keyboard in nice colors for students"
+   - "Nice colors" is subjective, no specific palette
+
+❌ "Educational diagram of a cell with labels"
+   - No style specified, which organelles?, what view?
+
+❌ "Realistic photo of circuit board"
+   - What angle? What lighting? What background?
+
+# OUTPUT JSON FORMAT
+
+Return valid JSON with:
+
+{{
+  "question_id": {q['question_id']},
+  "grade": {q['grade']},
+  "image_required": boolean,
+  "reason": "2-3 sentences explaining decision based on grade level, content type, and learning benefit",
+  "question_image_prompt": "DETAILED 100-150 word prompt following ALL 10 requirements above" OR null,
+  "option_a_image_prompt": "DETAILED 100-150 word prompt for: {q['option_a']}" OR null,
+  "option_b_image_prompt": "DETAILED 100-150 word prompt for: {q['option_b']}" OR null,
+  "option_c_image_prompt": "DETAILED 100-150 word prompt for: {q['option_c']}" OR null,
+  "option_d_image_prompt": "DETAILED 100-150 word prompt for: {q['option_d']}" OR null
+}}
+
+# CRITICAL REMINDERS
+
+- EVERY prompt must be 100-150 words minimum
+- Include SPECIFIC colors with hex codes when possible
+- Describe EXACT positioning and framing
+- Specify PRECISE lighting conditions
+- Name CONCRETE visual style (not "good" or "nice")
+- All option prompts must match in style and quality
+- Never use vague terms like "colorful", "nice", "good", "simple"
+- Think like you're instructing a photographer or illustrator who's never seen the subject"""
 
     # Call OpenAI with enhanced system message
     print("🤖 Calling OpenAI API...")
@@ -182,33 +206,44 @@ For Grade 8 (Scientific concept):
         messages=[
             {
                 "role": "system", 
-                "content": """You are an expert Educational Content Visualization Specialist. You have:
-- 15 years experience in educational content design
-- Deep understanding of child cognitive development
-- Expertise in visual learning theory
-- Professional prompt engineering skills
-- Knowledge of age-appropriate content design
+                "content": """You are a world-class Prompt Engineering Expert specializing in AI image generation. Your prompts are used by Fortune 500 companies for educational content.
 
-Your responses are:
-- Detailed and specific
-- Educationally sound
-- Based on learning science
-- Professionally formatted
-- Always in valid JSON format
+EXPERTISE:
+- 15+ years creating prompts for Midjourney, Stable Diffusion, DALL-E, Adobe Firefly
+- Deep knowledge of photography, illustration, and design principles
+- Expert in color theory (hex codes, color schemes, saturation)
+- Mastery of composition, lighting, and perspective
+- Understanding of age-appropriate visual design
 
-You create prompts that are:
-- Highly detailed (50-100 words)
-- Specific about style, colors, perspective
-- Age-appropriate
-- Consistent across all options
-- Professional quality"""
+YOUR PROMPTS ARE:
+- Extremely detailed (100-150 words minimum)
+- Technically precise (specific colors, angles, lighting)
+- Consistently structured across all outputs
+- Never vague or subjective
+- Professional quality that produces publication-ready images
+
+YOU NEVER USE:
+- Vague terms: "colorful", "nice", "good", "simple", "beautiful"
+- Subjective descriptions without specifics
+- Generic phrases like "high quality" without context
+- Short prompts under 100 words
+
+YOU ALWAYS INCLUDE:
+- Specific color values (names or hex codes)
+- Exact camera angles and framing
+- Precise lighting conditions and direction
+- Concrete visual style references
+- Technical quality specifications
+- Age-appropriate design elements
+
+You output ONLY valid JSON with no additional text."""
             },
             {
                 "role": "user", 
                 "content": prompt
             }
         ],
-        temperature=0.3,
+        temperature=0.2,  # Very low for consistency
         response_format={"type": "json_object"}
     )
     
@@ -217,8 +252,8 @@ You create prompts that are:
     print(f"✅ Analysis complete!")
     print(f"   Image Required: {result['image_required']}")
     
-    # Validate and enhance prompts if needed
-    result = validate_and_enhance_prompts(result)
+    # Validate prompts
+    result = validate_prompts(result)
     
     # Save to database
     print("\n💾 Saving to database...")
@@ -226,25 +261,38 @@ You create prompts that are:
     
     return result
 
-def validate_and_enhance_prompts(result):
-    """
-    Validate that generated prompts meet quality standards
-    """
-    # Check if prompts are too short (less than 20 words)
-    prompts_to_check = [
-        'question_image_prompt',
-        'option_a_image_prompt',
-        'option_b_image_prompt',
-        'option_c_image_prompt',
-        'option_d_image_prompt'
-    ]
+def validate_prompts(result):
+    """Validate that generated prompts meet quality standards"""
     
-    for prompt_key in prompts_to_check:
+    prompts_to_check = {
+        'question_image_prompt': 'Question',
+        'option_a_image_prompt': 'Option A',
+        'option_b_image_prompt': 'Option B',
+        'option_c_image_prompt': 'Option C',
+        'option_d_image_prompt': 'Option D'
+    }
+    
+    print("\n🔍 Validating prompt quality...")
+    
+    for prompt_key, label in prompts_to_check.items():
         prompt = result.get(prompt_key)
-        if prompt and len(prompt.split()) < 20:
-            print(f"⚠️  Warning: {prompt_key} seems too short. Consider regenerating.")
+        
+        if prompt:
+            word_count = len(prompt.split())
+            
+            # Check minimum length
+            if word_count < 80:
+                print(f"⚠️  {label}: Only {word_count} words (should be 100-150)")
+            else:
+                print(f"✅ {label}: {word_count} words")
+            
+            # Check for vague terms
+            vague_terms = ['colorful', 'nice', 'good', 'simple', 'beautiful', 'pretty']
+            found_vague = [term for term in vague_terms if term in prompt.lower()]
+            if found_vague:
+                print(f"⚠️  {label}: Contains vague terms: {', '.join(found_vague)}")
     
-    # Check consistency - if one option has prompt, all should have
+    # Check option consistency
     option_prompts = [
         result.get('option_a_image_prompt'),
         result.get('option_b_image_prompt'),
@@ -255,6 +303,9 @@ def validate_and_enhance_prompts(result):
     non_null_count = sum(1 for p in option_prompts if p is not None)
     
     if non_null_count > 0 and non_null_count < 4:
-        print(f"⚠️  Warning: Only {non_null_count}/4 options have image prompts. This may create unfair advantages.")
+        print(f"\n⚠️  FAIRNESS WARNING: Only {non_null_count}/4 options have images!")
+        print(f"   This may give unfair hints to students.")
+    elif non_null_count == 4:
+        print(f"\n✅ All 4 options have images - Fair assessment maintained")
     
     return result
