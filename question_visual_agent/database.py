@@ -37,6 +37,26 @@ def fetch_question(question_id):
     conn.close()
     return question
 
+def fetch_questions_by_grade(grade):
+    """Fetch all question IDs for a specific grade"""
+    conn = get_db()
+    cur = conn.cursor()
+    
+    query = """
+    SELECT DISTINCT q.question_id
+    FROM questions q
+    JOIN syllabus s ON q.syllabus_id = s.syllabus_id
+    JOIN exam_overview e ON s.exam_overview_id = e.exam_overview_id
+    WHERE e.grade = %s AND q.is_active = TRUE
+    ORDER BY q.question_id;
+    """
+    
+    cur.execute(query, (grade,))
+    question_ids = [row['question_id'] for row in cur.fetchall()]
+    
+    conn.close()
+    return question_ids
+
 def save_to_database(result):
     """Save analysis result to database"""
     conn = get_db()
