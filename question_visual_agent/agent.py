@@ -29,49 +29,48 @@ def analyze_question(question_id):
     if q.get('subtopic') and q['subtopic'].strip():
         subject_context += f" ({q['subtopic']})"
     
-    # Enhanced prompt with detailed instructions
-    prompt = f"""You are an expert Educational Content Visualization Specialist with 15+ years of experience in creating educational imagery and prompt engineering for AI image generation systems.
+    user_prompt = f"""
+You are an Educational Visualization Designer who creates accurate, age-appropriate AI image generation prompts 
+(for Midjourney, DALL·E, or Stable Diffusion). Analyze each question, decide if an image aids understanding, 
+and generate clear, consistent prompts when needed.
 
-# CONTEXT
-- Student Grade Level: {q['grade']} (Age: {q['grade'] + 5} years approximately)
-- Difficulty Level: {q['difficulty']}
+CONTEXT
+- Grade: {q['grade']} (Age ≈ {q['grade'] + 5})
+- Difficulty: {q['difficulty']}
 - Exam: {q['exam']} Olympiad
 - Level: {q['level']}
-- Subject/Section: {subject_context}
+- Subject: {subject_context}
 
-# YOUR MISSION
-1. Analyze if this question needs visual aids for better learning
-2. If yes, create EXTREMELY DETAILED, SPECIFIC image generation prompts that will work with ANY AI image generator (Midjourney, Stable Diffusion, DALL-E, etc.)
+TASKS
+1. Decide: Does this question need an image for better comprehension?
+2. If yes: Generate a 100–150 word prompt for the question and each option.
+3. Ensure: All option prompts match perfectly in visual style, framing, and tone.
 
-# GRADE-SPECIFIC VISUAL REQUIREMENTS
+STYLE BY GRADE
+- Grades 1–3: Bright cartoon; primary colors; simple; no text; cheerful.
+- Grades 4–5: Semi-realistic; vibrant natural palette; moderate detail; simple labels; engaging.
+- Grades 6–8: Realistic/diagrammatic; balanced colors; detailed; annotated; professional.
+- Grades 9–10: Technical/photorealistic; accurate tones; complex; full labels; academic.
 
-**Grades 1-3 (Ages 6-8):**
-- Style: Bright cartoon illustrations, simple shapes
-- Colors: Primary colors (red, blue, yellow), high saturation
-- Complexity: Single subject, minimal background elements
-- Text: None or very minimal labels
-- Mood: Cheerful, friendly, welcoming
+VISUAL CONSISTENCY RULES
+- All options must share identical: style, framing, tone, lighting, color saturation, and perspective.
+- Never reveal hints through style, quality, or color differences.
+- Use clear, measurable terms — not vague adjectives like “nice,” “colorful,” or “simple.”
+- Include camera angle, lighting, background, and color details (use hex codes).
+- No text overlays, watermarks, or brand marks.
 
-**Grades 4-5 (Ages 9-10):**
-- Style: Semi-realistic illustrations with some detail
-- Colors: Vibrant but natural color palettes
-- Complexity: Main subject + 2-3 supporting elements
-- Text: Simple labels acceptable
-- Mood: Engaging, informative
-
-**Grades 6-8 (Ages 11-13):**
-- Style: Realistic illustrations or clean diagrams
-- Colors: Natural, balanced, professional
-- Complexity: Multiple elements, layered information
-- Text: Labels, annotations, brief descriptions
-- Mood: Professional, educational
-
-**Grades 9-10 (Ages 14-15):**
-- Style: Technical, photorealistic, or schematic
-- Colors: Professional, accurate to reality
-- Complexity: Detailed, multi-layered information
-- Text: Technical labels, measurements, annotations
-- Mood: Academic, precise
+PROMPT STRUCTURE
+Each image prompt must describe, in this order:
+1. Subject: Exact object/concept
+2. Context: Educational purpose
+3. Style: Artistic or technical type
+4. Composition: Camera view, framing, position
+5. Colors: Key tones with hex codes if possible
+6. Background: Solid, gradient, or environment
+7. Lighting: Type, direction, shadows
+8. Texture & Details: Material and surface description
+9. Technical Specs: Resolution, clarity, cleanliness
+10. Age Tone: Fit for the target grade level
 
 # QUESTION ANALYSIS
 
@@ -84,94 +83,6 @@ B) {q['option_b']}
 C) {q['option_c']}
 D) {q['option_d']}
 
-# CRITICAL RULES FOR VISUAL CONSISTENCY
-
-1. **All option images MUST be identical in:**
-   - Visual style (cartoon/realistic/diagram)
-   - Image dimensions and framing
-   - Color saturation and tone
-   - Level of detail
-   - Background type and color
-   - Lighting conditions
-   - Perspective/camera angle
-
-2. **Images must NOT give hints through:**
-   - Better quality for correct answer
-   - Different artistic styles
-   - More detail on one option
-   - Different color schemes
-   - Size variations
-
-# PROMPT STRUCTURE REQUIREMENTS
-
-Each image prompt MUST include ALL these elements in this order:
-
-1. **SUBJECT** (What): Precisely describe the main object/concept
-   - Be specific: Not "a device" but "a wireless computer mouse with ergonomic design"
-   
-2. **CONTEXT** (Why): Educational purpose
-   - Example: "for teaching grade 3 students about input devices"
-
-3. **STYLE** (How): Artistic approach
-   - Specific styles: "flat design illustration", "photorealistic render", "technical line drawing"
-   - NOT vague: "nice drawing", "good image"
-
-4. **COMPOSITION** (Layout):
-   - Camera angle: "straight-on view", "45-degree angle", "bird's eye view"
-   - Framing: "centered in frame", "occupying 70% of image"
-   - Position: "object positioned in center", "slightly left of center"
-
-5. **COLORS** (Palette):
-   - Specific colors: "bright cherry red", "navy blue", "lime green"
-   - Color scheme: "monochromatic blue scheme", "complementary orange and blue"
-   - NOT vague: "colorful", "nice colors"
-
-6. **BACKGROUND**:
-   - Specific: "solid white background", "soft gradient from light blue to white", "blurred classroom setting"
-   - NOT vague: "simple background"
-
-7. **LIGHTING**:
-   - Type: "soft diffused lighting", "bright studio lighting", "natural daylight"
-   - Direction: "light from top-left", "evenly lit"
-   - Shadows: "minimal shadows", "soft drop shadow"
-
-8. **DETAILS & TEXTURE**:
-   - Surface: "smooth plastic texture", "matte finish", "glossy surface"
-   - Details: "visible buttons", "brand logo removed", "clean edges"
-
-9. **TECHNICAL SPECS**:
-   - Quality: "high resolution", "sharp focus", "8K quality"
-   - Format notes: "no text overlays", "no watermarks", "clean professional image"
-
-10. **AGE-APPROPRIATE ELEMENTS**:
-    - For 1-5: "child-friendly", "non-threatening", "engaging and fun"
-    - For 6-10: "educational and clear", "professional quality"
-
-# EXAMPLE EXCELLENT PROMPTS
-
-**Grade 2 - Computer Mouse (Option):**
-"A bright blue wireless computer mouse with rounded ergonomic shape, designed for teaching grade 2 students about input devices. Flat illustration style with bold outlines. Mouse positioned in center of frame, occupying 60% of image space, shown from 45-degree top-right angle. Solid white background with no shadows. Mouse colored in vibrant sky blue (#87CEEB) with darker blue (#4682B4) accent on scroll wheel. Two visible buttons clearly defined. Smooth cartoon-style rendering with minimal detail. Soft even lighting from top. Matte plastic texture appearance. High contrast against white background. Child-friendly and simple. No text, labels, or branding. Clean professional educational illustration. 8K resolution, sharp edges, vector-style quality."
-
-**Grade 5 - Plant Cell (Question):**
-"A detailed cross-section diagram of a plant cell for teaching grade 5 biology students. Semi-realistic scientific illustration style. Cell shown in center, taking up 80% of frame, with cutaway view revealing internal structures. Light green cell wall (#90EE90) as outer layer, cell membrane just inside in darker green (#228B22). Visible organelles: large central vacuole in pale blue (#E0F4FF), nucleus in light purple (#DDA0DD) with darker nucleolus, multiple green chloroplasts (#3CB371), mitochondria in pink (#FFB6C1), endoplasmic reticulum network in light yellow (#FFFACD). Each organelle clearly distinguished by color and shape. White background for clarity. Soft educational lighting from top-left creating gentle shadows. Labels removed (for educational testing). Clean line work, smooth gradients. Professional textbook quality. Medium detail level appropriate for grade 5. 4K resolution, crisp edges, scientific accuracy."
-
-**Grade 8 - Circuit Board (Question):**
-"Professional overhead photograph of a computer circuit board (motherboard) for teaching grade 8 technology students. Photorealistic style. Rectangular green PCB (printed circuit board) centered in frame, occupying 75% of image. Standard motherboard green color (#2F4F2F) with golden-yellow copper traces (#FFD700) creating complex pathways across surface. Multiple components visible: black rectangular RAM slots on left side, silver heat sinks on processors, small cylindrical capacitors in various colors, square microchips with visible pins. Shot from directly above (90-degree top-down view). Shallow depth of field with center in sharp focus, edges slightly softer. Bright white LED studio lighting from multiple angles eliminating harsh shadows. Clean professional tech photography. Glossy and matte surface textures visible. Extreme detail showing solder points and component labels. Modern contemporary hardware (2020s era). White background fading to light gray at edges. Technical accuracy essential. No hands or tools visible. Product photography quality. 8K resolution, macro photography sharpness."
-
-# BAD PROMPTS TO AVOID
-
-❌ "A colorful mouse" 
-   - Too vague, no style, no context
-
-❌ "Computer keyboard in nice colors for students"
-   - "Nice colors" is subjective, no specific palette
-
-❌ "Educational diagram of a cell with labels"
-   - No style specified, which organelles?, what view?
-
-❌ "Realistic photo of circuit board"
-   - What angle? What lighting? What background?
-
 # OUTPUT JSON FORMAT
 
 Return valid JSON with:
@@ -180,33 +91,42 @@ Return valid JSON with:
   "question_id": {q['question_id']},
   "grade": {q['grade']},
   "image_required": boolean,
-  "reason": "2-3 sentences explaining decision based on grade level, content type, and learning benefit",
-  "question_image_prompt": "DETAILED 100-150 word prompt following ALL 10 requirements above" OR null,
-  "option_a_image_prompt": "DETAILED 100-150 word prompt for: {q['option_a']}" OR null,
-  "option_b_image_prompt": "DETAILED 100-150 word prompt for: {q['option_b']}" OR null,
-  "option_c_image_prompt": "DETAILED 100-150 word prompt for: {q['option_c']}" OR null,
-  "option_d_image_prompt": "DETAILED 100-150 word prompt for: {q['option_d']}" OR null
+  "reason": "2–3 sentences explaining the visual benefit based on grade and content.",
+  "question_image_prompt": "<100–150 word prompt or null>",
+  "option_a_image_prompt": "<100–150 word prompt for: {q['option_a']} or null>",
+  "option_b_image_prompt": "<100–150 word prompt for: {q['option_b']} or null>",
+  "option_c_image_prompt": "<100–150 word prompt for: {q['option_c']} or null>",
+  "option_d_image_prompt": "<100–150 word prompt for: {q['option_d']} or null>"
 }}
 
-# CRITICAL REMINDERS
+GOOD PROMPT EXAMPLE
+“A bright blue wireless computer mouse with rounded ergonomic design for grade 2 students learning about input devices. 
+Flat vector-style illustration, centered at 45° top-right angle, occupying 60% of frame. Solid white background, no shadows. 
+Colors: sky blue (#87CEEB) and navy (#4682B4). Matte surface, clean edges. Even soft lighting from top. 
+Child-friendly tone, simple and cheerful. 8K crisp vector quality.”
 
-- EVERY prompt must be 100-150 words minimum
-- Include SPECIFIC colors with hex codes when possible
-- Describe EXACT positioning and framing
-- Specify PRECISE lighting conditions
-- Name CONCRETE visual style (not "good" or "nice")
-- All option prompts must match in style and quality
-- Never use vague terms like "colorful", "nice", "good", "simple"
-- Think like you're instructing a photographer or illustrator who's never seen the subject"""
+AVOID
+❌ “A colorful mouse” (too vague)
+❌ “Diagram of cell with labels” (unspecified view/style)
+❌ “Realistic photo of circuit board” (missing angle/lighting)
 
-    # Call OpenAI with enhanced system message
-    print("🤖 Calling OpenAI API...")
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[
-            {
-                "role": "system", 
-                "content": """You are a world-class Prompt Engineering Expert specializing in AI image generation. Your prompts are used by Fortune 500 companies for educational content.
+CHECKLIST BEFORE OUTPUT
+- 100–150 words per prompt
+- Consistent tone and framing across all options
+- Includes color, lighting, and composition
+- JSON syntax valid
+- Educationally appropriate for grade level
+
+DECISION EXAMPLES
+✅ “A visual is helpful to illustrate a plant cell’s internal structure for grade 5 learners.”
+❌ “No image needed; the question tests logical reasoning only.”
+
+SYSTEM NOTE
+- Be concise but complete.
+- Avoid repeating identical scene setup across options unless visual differences are necessary for the question.
+"""
+    
+    system_prompt = """You are a world-class Prompt Engineering Expert specializing in AI image generation. Your prompts are used by Fortune 500 companies for educational content.
 
 EXPERTISE:
 - 15+ years creating prompts for Midjourney, Stable Diffusion, DALL-E, Adobe Firefly
@@ -237,10 +157,19 @@ YOU ALWAYS INCLUDE:
 - Age-appropriate design elements
 
 You output ONLY valid JSON with no additional text."""
+
+    # Call OpenAI with enhanced system message
+    print("🤖 Calling OpenAI API...")
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system", 
+                "content": system_prompt
             },
             {
                 "role": "user", 
-                "content": prompt
+                "content": user_prompt
             }
         ],
         temperature=0.2,  # Very low for consistency
