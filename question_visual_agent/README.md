@@ -38,6 +38,8 @@ This system is designed for educational content creators who need to enhance oly
 - ✅ **Fair Assessment**: Ensures visual consistency across all options
 - ✅ **Batch Processing**: Parallel analysis of all questions in a grade
 - ✅ **Token Optimization**: Reduced token usage by 90% through smart prompt engineering
+- ✅ **Image Generation**: Integrated image generation using Stability AI or Hugging Face (NEW)
+- ✅ **Automated Workflow**: From prompt analysis to image generation in one flow (NEW)
 
 ### Quality Assurance
 - 📊 Word count validation (minimum 80 words)
@@ -84,6 +86,7 @@ This system is designed for educational content creators who need to enhance oly
   - `openai` (>=1.104.1,<2) - OpenAI API client
   - `psycopg2-binary==2.9.10` - PostgreSQL adapter
   - `python-dotenv==1.1.1` - Environment management
+  - `requests==2.31.0` - HTTP library for image generation APIs
 
 ## 📁 Project Structure
 
@@ -99,8 +102,14 @@ question_visual_agent/
 ├── main.py                 # CLI interface
 ├── agent.py                # Core AI analysis logic
 ├── database.py             # Database operations
+├── image_generator.py      # Image generation module (NEW)
+├── test_image_generator.py # Test script for image generation (NEW)
 │
-└── generated_images/       # Output folder for images (optional)
+└── generated_images/       # Generated images stored here (auto-created)
+    ├── q_2010_question.png
+    ├── q_2010_option_a.png
+    ├── q_2010_option_b.png
+    └── ...
 ```
 
 ## 🚀 Installation
@@ -159,15 +168,38 @@ DB_PASSWORD=your_password
 
 # OpenAI API Configuration
 OPENAI_API_KEY=sk-your-openai-api-key-here
+
+# Image Generation API Configuration (NEW)
+IMAGE_GEN_API_KEY=your_stability_or_huggingface_api_key
+IMAGE_GEN_API_URL=https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image
 ```
 
-### 3. Get OpenAI API Key
+### 3. Get API Keys
+
+#### OpenAI API Key
 
 1. Visit [OpenAI Platform](https://platform.openai.com/)
 2. Sign up or log in
 3. Navigate to API Keys
 4. Create new secret key
 5. Copy to `.env` file
+
+#### Image Generation API Key (Choose One)
+
+**Option A: Stability AI (Paid, High Quality)**
+1. Visit [Stability AI](https://platform.stability.ai/)
+2. Sign up and add payment method
+3. Get API key from dashboard
+4. API URL: `https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image`
+5. Cost: ~$0.002-0.004 per image
+
+**Option B: Hugging Face (FREE, Good Quality)** ⭐ Recommended
+1. Visit [Hugging Face](https://huggingface.co/)
+2. Sign up (free, no credit card)
+3. Settings → Access Tokens → New Token
+4. Copy token
+5. API URL: `https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0`
+6. Cost: FREE!
 
 ## 🗄️ Database Setup
 
@@ -290,6 +322,104 @@ Enter question ID: 2010
 💾 Saving to database...
 ✅ Saved to database with ID: 42
 ```
+
+---
+
+### Generate Images from Prompts (NEW)
+
+After analyzing questions, you can generate images using the stored prompts:
+
+#### Method 1: Using Python Script
+
+```python
+from image_generator import generate_images_for_question
+from database import get_db
+
+# Fetch prompts from database
+conn = get_db()
+cur = conn.cursor()
+cur.execute("""
+    SELECT question_id, image_required, question_image_prompt,
+           option_a_image_prompt, option_b_image_prompt,
+           option_c_image_prompt, option_d_image_prompt
+    FROM question_visual_prompts
+    WHERE question_id = 2010
+""")
+prompts_data = cur.fetchone()
+conn.close()
+
+# Generate all images
+if prompts_data['image_required']:
+    results = generate_images_for_question(2010, prompts_data)
+```
+
+#### Method 2: Test Single Image
+
+```bash
+python test_image_generator.py
+```
+
+**Output:**
+```
+🧪 Testing Image Generator
+
+🎨 Generating image: q_1984_question.png
+   Prompt preview: A bright cartoon illustration of Earth with a thick layer of colorful gases...
+
+✅ Image saved: generated_images/q_1984_question.png
+
+✅ Test successful!
+📁 Image saved at: generated_images/q_1984_question.png
+```
+
+---
+
+### Image Generation Features
+
+The `image_generator.py` module provides:
+
+**1. Single Image Generation:**
+```python
+from image_generator import generate_image
+
+result = generate_image(
+    prompt="Your detailed 100-150 word prompt...",
+    question_id=2010,
+    image_type="option",
+    option="a"
+)
+
+if result['success']:
+    print(f"Image saved at: {result['file_path']}")
+```
+
+**2. Batch Generation for Question:**
+```python
+from image_generator import generate_images_for_question
+
+prompts = {
+    "question_image_prompt": "...",
+    "option_a_image_prompt": "...",
+    "option_b_image_prompt": "...",
+    "option_c_image_prompt": "...",
+    "option_d_image_prompt": "..."
+}
+
+results = generate_images_for_question(2010, prompts)
+print(f"Generated: {results['images_generated']} images")
+print(f"Failed: {results['images_failed']} images")
+```
+
+**Image Naming Convention:**
+- Question: `q_2010_question.png`
+- Option A: `q_2010_option_a.png`
+- Option B: `q_2010_option_b.png`
+- Option C: `q_2010_option_c.png`
+- Option D: `q_2010_option_d.png`
+
+All images saved in: `generated_images/` folder (auto-created)
+
+---
 
 ### Option 2: Batch Process by Grade
 
@@ -501,11 +631,48 @@ SELECT * FROM questions WHERE question_id = 2010;
 
 **Solution**: This is tracked automatically. The prompt is still saved, but you may want to regenerate or manually edit.
 
-### Issue: Token usage seems high
+### Issue: Image generation fails with "text_prompts: cannot be blank"
 
-**Cause**: First API call includes system prompt tokens.
+**Cause**: Using wrong API format for your image generation service.
 
-**Solution**: This is expected. Subsequent calls in the same session are much cheaper due to prompt caching.
+**Solution**: The code is configured for Stability AI. If using Hugging Face, update `image_generator.py`:
+
+**For Hugging Face:**
+```python
+# Change payload to:
+payload = {
+    "inputs": prompt
+}
+
+# And response handling to:
+if response.status_code == 200:
+    # Hugging Face returns image bytes directly
+    with open(file_path, 'wb') as f:
+        f.write(response.content)
+```
+
+**For Stability AI:** (Current code)
+```python
+# Keep existing code with text_prompts and base64 decoding
+```
+
+### Issue: Image generation timeout
+
+**Cause**: Image generation takes 30-60 seconds per image.
+
+**Solution**: 
+- Timeout is set to 60 seconds (reasonable)
+- If consistently timing out, check your API key and internet connection
+- Consider generating images overnight for large batches
+
+### Issue: "No image data in response"
+
+**Cause**: Stability AI response format changed or API issue.
+
+**Solution**:
+1. Check Stability AI API status
+2. Verify your API key is valid and has credits
+3. Check the response format in their documentation
 
 ## 📝 Best Practices
 
@@ -525,20 +692,28 @@ SELECT * FROM questions WHERE question_id = 2010;
 
 ## 📈 Performance
 
-- **Single Question**: ~3-5 seconds
-- **Batch (100 questions, 10 workers)**: ~2-3 minutes
+- **Single Question Analysis**: ~3-5 seconds
+- **Single Image Generation**: ~30-60 seconds (Stability AI) or ~10-20 seconds (Hugging Face)
+- **Batch (100 questions, 10 workers)**: ~2-3 minutes (analysis only)
+- **Batch Image Generation (100 questions × 5 images)**: ~4-8 hours
 - **Token Usage**: ~200 tokens per question (optimized)
-- **Cost**: ~$0.0003 per question
+- **Analysis Cost**: ~$0.0003 per question
+- **Image Cost**: FREE (Hugging Face) or ~$0.002-0.004 per image (Stability AI)
 
 ## 🚀 Future Enhancements
 
-- [ ] Direct integration with image generation APIs
-- [ ] Web interface for easier access
+- [ ] Integrated workflow (analyze → generate images in one command)
 - [ ] Image quality validation after generation
+- [ ] Retry mechanism for failed image generations
+- [ ] Progress bar for batch image generation
+- [ ] Image compression and optimization
+- [ ] Multiple image size options (512px, 1024px, 2048px)
+- [ ] Web interface for easier access
 - [ ] Multi-language support
 - [ ] Custom prompt templates per subject
-- [ ] Analytics dashboard for token usage
+- [ ] Analytics dashboard for token usage and image generation stats
 - [ ] Automatic cost alerts
+- [ ] Background job queue for large batch processing
 
 ## 📄 License
 
