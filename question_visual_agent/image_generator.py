@@ -1,17 +1,19 @@
 import os
-import requests
+import google.generativeai as genai
+from PIL import Image
+from io import BytesIO
 from dotenv import load_dotenv
 from pathlib import Path
 
 load_dotenv()
 
 # Create images folder if it doesn't exist
-IMAGES_FOLDER = "generated_images"
+IMAGES_FOLDER = "gemini_generated_images"
 Path(IMAGES_FOLDER).mkdir(exist_ok=True)
 
 def generate_image(prompt, question_id, image_type="question", option=None):
     """
-    Generate image from prompt using external API
+    Generate image from prompt using Gemini API
     
     Args:
         prompt (str): The detailed image generation prompt
@@ -23,14 +25,13 @@ def generate_image(prompt, question_id, image_type="question", option=None):
         dict: {"success": bool, "file_path": str or None, "error": str or None}
     """
     
-    api_key = os.getenv("IMAGE_GEN_API_KEY")
-    api_url = os.getenv("IMAGE_GEN_API_URL")
+    api_key = os.getenv("GEMINI_API_KEY")
     
-    if not api_key or not api_url:
+    if not api_key:
         return {
             "success": False,
             "file_path": None,
-            "error": "IMAGE_GEN_API_KEY or IMAGE_GEN_API_URL not found in .env"
+            "error": "GEMINI_API_KEY not found in .env"
         }
     
     # Build filename
@@ -45,73 +46,61 @@ def generate_image(prompt, question_id, image_type="question", option=None):
     print(f"   Prompt preview: {prompt[:80]}...")
     
     try:
-        # Stability AI API headers
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+        # Configure Gemini with API key
+        genai.configure(api_key=api_key)
         
-        # Stability AI specific payload
-        payload = {
-            "text_prompts": [
-                {
-                    "text": prompt,
-                    "weight": 1
-                }
-            ],
-            "cfg_scale": 7,
-            "height": 1024,
-            "width": 1024,
-            "samples": 1,
-            "steps": 30
-        }
+        # Create model instance
+        model = genai.GenerativeModel("gemini-2.5-flash-image")
         
-        response = requests.post(api_url, headers=headers, json=payload, timeout=60)
+        # Generate image
+        print("   Calling Gemini API...")
+        response = model.generate_content(prompt)
         
-        if response.status_code == 200:
-            # Stability AI returns JSON with base64 image
-            data = response.json()
-            
-            # Extract base64 image from response
-            import base64
-            if "artifacts" in data and len(data["artifacts"]) > 0:
-                image_data = base64.b64decode(data["artifacts"][0]["base64"])
-                
-                # Save image
-                with open(file_path, 'wb') as f:
-                    f.write(image_data)
-                
-                print(f"✅ Image saved: {file_path}")
-                return {
-                    "success": True,
-                    "file_path": file_path,
-                    "error": None
-                }
-            else:
-                error_msg = "No image data in response"
-                print(f"❌ {error_msg}")
-                return {
-                    "success": False,
-                    "file_path": None,
-                    "error": error_msg
-                }
-        else:
-            error_msg = f"API returned status {response.status_code}: {response.text}"
+        # Check if response has content
+        if not response.candidates:
+            error_msg = "No image generated in response"
             print(f"❌ {error_msg}")
             return {
                 "success": False,
                 "file_path": None,
                 "error": error_msg
             }
-    
-    except requests.exceptions.Timeout:
-        error_msg = "Request timed out after 60 seconds"
-        print(f"❌ {error_msg}")
+        
+        # Extract image data
+        candidate = response.candidates[0]
+        if not candidate.content.parts:
+            error_msg = "No image data in response parts"
+            print(f"❌ {error_msg}")
+            return {
+                "success": False,
+                "file_path": None,
+                "error": error_msg
+            }
+        
+        # Get inline image data
+        part = candidate.content.parts[0]
+        
+        if not hasattr(part, 'inline_data') or not part.inline_data:
+            part=candidate.content.parts[1]
+            if not hasattr(part, 'inline_data') or not part.inline_data:
+                error_msg = "No inline_data found in response"
+                print(f"❌ {error_msg}")
+                return {
+                    "success": False,
+                    "file_path": None,
+                    "error": error_msg
+                }
+        
+        # Convert bytes to image and save
+        image_bytes = part.inline_data.data
+        image = Image.open(BytesIO(image_bytes))
+        image.save(file_path)
+        
+        print(f"✅ Image saved: {file_path}")
         return {
-            "success": False,
-            "file_path": None,
-            "error": error_msg
+            "success": True,
+            "file_path": file_path,
+            "error": None
         }
     
     except Exception as e:
