@@ -220,7 +220,7 @@ Quality over quantity. Generate detailed, professional prompts that will produce
                 "content": user_prompt
             }
         ],
-        temperature=0.2,  # Very low for consistency
+        temperature=0.7,
         response_format={"type": "json_object"}
     )
     
@@ -247,7 +247,7 @@ Quality over quantity. Generate detailed, professional prompts that will produce
     print(f"   Image Required: {result['image_required']}")
     
     # Validate prompts
-    result = validate_prompts(result)
+    # result = validate_prompts(result)
     
     # Save to database
     print("\n💾 Saving to database...")
@@ -313,54 +313,54 @@ def analyze_questions_by_grade(grade, max_workers=5):
     
     return results
 
-def validate_prompts(result):
-    """Validate that generated prompts meet quality standards"""
+# def validate_prompts(result):
+#     """Validate that generated prompts meet quality standards"""
     
-    prompts_to_check = {
-        'question_image_prompt': 'Question',
-        'option_a_image_prompt': 'Option A',
-        'option_b_image_prompt': 'Option B',
-        'option_c_image_prompt': 'Option C',
-        'option_d_image_prompt': 'Option D'
-    }
+#     prompts_to_check = {
+#         'question_image_prompt': 'Question',
+#         'option_a_image_prompt': 'Option A',
+#         'option_b_image_prompt': 'Option B',
+#         'option_c_image_prompt': 'Option C',
+#         'option_d_image_prompt': 'Option D'
+#     }
     
-    print("\n🔍 Validating prompt quality...")
+#     print("\n🔍 Validating prompt quality...")
     
-    for prompt_key, label in prompts_to_check.items():
-        prompt = result.get(prompt_key)
+#     for prompt_key, label in prompts_to_check.items():
+#         prompt = result.get(prompt_key)
         
-        if prompt:
-            word_count = len(prompt.split())
+#         if prompt:
+#             word_count = len(prompt.split())
             
-            # Check minimum length
-            if word_count < 80:
-                print(f"⚠️  {label}: Only {word_count} words (should be 100-150)")
-            else:
-                print(f"✅ {label}: {word_count} words")
+#             # Check minimum length
+#             if word_count < 80:
+#                 print(f"⚠️  {label}: Only {word_count} words (should be 100-150)")
+#             else:
+#                 print(f"✅ {label}: {word_count} words")
             
-            # Check for vague terms
-            vague_terms = ['colorful', 'nice', 'good', 'simple', 'beautiful', 'pretty']
-            found_vague = [term for term in vague_terms if term in prompt.lower()]
-            if found_vague:
-                print(f"⚠️  {label}: Contains vague terms: {', '.join(found_vague)}")
+#             # Check for vague terms
+#             vague_terms = ['colorful', 'nice', 'good', 'simple', 'beautiful', 'pretty']
+#             found_vague = [term for term in vague_terms if term in prompt.lower()]
+#             if found_vague:
+#                 print(f"⚠️  {label}: Contains vague terms: {', '.join(found_vague)}")
     
-    # Check option consistency
-    option_prompts = [
-        result.get('option_a_image_prompt'),
-        result.get('option_b_image_prompt'),
-        result.get('option_c_image_prompt'),
-        result.get('option_d_image_prompt')
-    ]
+#     # Check option consistency
+#     option_prompts = [
+#         result.get('option_a_image_prompt'),
+#         result.get('option_b_image_prompt'),
+#         result.get('option_c_image_prompt'),
+#         result.get('option_d_image_prompt')
+#     ]
     
-    non_null_count = sum(1 for p in option_prompts if p is not None)
+#     non_null_count = sum(1 for p in option_prompts if p is not None)
     
-    if non_null_count > 0 and non_null_count < 4:
-        print(f"\n⚠️  FAIRNESS WARNING: Only {non_null_count}/4 options have images!")
-        print(f"   This may give unfair hints to students.")
-    elif non_null_count == 4:
-        print(f"\n✅ All 4 options have images - Fair assessment maintained")
+#     if non_null_count > 0 and non_null_count < 4:
+#         print(f"\n⚠️  FAIRNESS WARNING: Only {non_null_count}/4 options have images!")
+#         print(f"   This may give unfair hints to students.")
+#     elif non_null_count == 4:
+#         print(f"\n✅ All 4 options have images - Fair assessment maintained")
     
-    return result
+#     return result
 
 def log_token_usage(tokens_info):
     """Log token usage to file for analysis"""
