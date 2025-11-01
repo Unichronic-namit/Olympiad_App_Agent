@@ -1,0 +1,295 @@
+<svg viewBox="0 0 1400 2000" xmlns="http://www.w3.org/2000/svg">
+  <!-- Title -->
+  <text x="700" y="40" font-size="32" font-weight="bold" text-anchor="middle" fill="#1a365d">
+    Educational Question Image Generation Pipeline
+  </text>
+  <text x="700" y="70" font-size="16" text-anchor="middle" fill="#4a5568">
+    End-to-End Flow: From Question Analysis to Image Generation
+  </text>
+  
+  <!-- Phase 1: Input -->
+  <rect x="50" y="100" width="1300" height="120" fill="#e6f3ff" stroke="#3182ce" stroke-width="2" rx="10"/>
+  <text x="700" y="130" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c5282">
+    PHASE 1: INPUT &amp; DATA FETCH
+  </text>
+  
+  <rect x="100" y="150" width="200" height="50" fill="#4299e1" stroke="#2b6cb0" stroke-width="2" rx="5"/>
+  <text x="200" y="180" font-size="14" font-weight="bold" text-anchor="middle" fill="white">User Input</text>
+  <text x="200" y="195" font-size="12" text-anchor="middle" fill="white">Question ID: 2010</text>
+  
+  <path d="M 300 175 L 370 175" stroke="#2c5282" stroke-width="3" marker-end="url(#arrowblue)"/>
+  
+  <rect x="370" y="150" width="200" height="50" fill="#48bb78" stroke="#2f855a" stroke-width="2" rx="5"/>
+  <text x="470" y="178" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Database Query</text>
+  <text x="470" y="195" font-size="11" text-anchor="middle" fill="white">fetch_question()</text>
+  
+  <path d="M 570 175 L 640 175" stroke="#2f855a" stroke-width="3" marker-end="url(#arrowgreen)"/>
+  
+  <rect x="640" y="140" width="300" height="70" fill="#f7fafc" stroke="#2f855a" stroke-width="2" rx="5"/>
+  <text x="790" y="165" font-size="12" font-weight="bold" text-anchor="middle" fill="#2d3748">Fetched Data:</text>
+  <text x="790" y="182" font-size="10" text-anchor="middle" fill="#4a5568">Question, Options, Grade, Difficulty</text>
+  <text x="790" y="197" font-size="10" text-anchor="middle" fill="#4a5568">Subject, Topic, Exam, Level</text>
+  
+  <path d="M 790 210 L 790 270" stroke="#2f855a" stroke-width="3" marker-end="url(#arrowgreen)"/>
+  
+  <!-- Phase 2: AI Analysis -->
+  <rect x="50" y="270" width="1300" height="280" fill="#fff5f5" stroke="#e53e3e" stroke-width="2" rx="10"/>
+  <text x="700" y="300" font-size="20" font-weight="bold" text-anchor="middle" fill="#c53030">
+    PHASE 2: AI VISUAL ANALYSIS (OpenAI GPT-4o-mini)
+  </text>
+  
+  <rect x="100" y="320" width="250" height="80" fill="#fc8181" stroke="#c53030" stroke-width="2" rx="5"/>
+  <text x="225" y="345" font-size="13" font-weight="bold" text-anchor="middle" fill="white">System Prompt</text>
+  <text x="225" y="363" font-size="10" text-anchor="middle" fill="white">Expert Educational Content</text>
+  <text x="225" y="377" font-size="10" text-anchor="middle" fill="white">Visualization Specialist</text>
+  <text x="225" y="391" font-size="10" text-anchor="middle" fill="white">15+ years experience</text>
+  
+  <rect x="400" y="320" width="520" height="80" fill="#feb2b2" stroke="#c53030" stroke-width="2" rx="5"/>
+  <text x="660" y="340" font-size="12" font-weight="bold" text-anchor="middle" fill="#742a2a">User Prompt (Enhanced)</text>
+  <text x="660" y="356" font-size="9" text-anchor="middle" fill="#742a2a">✓ Grade-specific guidelines (Ages 6-15)</text>
+  <text x="660" y="369" font-size="9" text-anchor="middle" fill="#742a2a">✓ Content type analysis (Objects, Concepts, Spatial)</text>
+  <text x="660" y="382" font-size="9" text-anchor="middle" fill="#742a2a">✓ Fairness rules (Consistent style for all options)</text>
+  <text x="660" y="395" font-size="9" text-anchor="middle" fill="#742a2a">✓ 10-point prompt structure (Subject, Style, Colors, etc.)</text>
+  
+  <rect x="970" y="320" width="280" height="80" fill="#f7fafc" stroke="#c53030" stroke-width="2" rx="5"/>
+  <text x="1110" y="345" font-size="11" font-weight="bold" text-anchor="middle" fill="#2d3748">AI Analyzes:</text>
+  <text x="1110" y="361" font-size="9" text-anchor="middle" fill="#4a5568">1. Does question need images?</text>
+  <text x="1110" y="374" font-size="9" text-anchor="middle" fill="#4a5568">2. Which parts? (Question/Options)</text>
+  <text x="1110" y="387" font-size="9" text-anchor="middle" fill="#4a5568">3. What visual style? (Age-appropriate)</text>
+  
+  <path d="M 660 400 L 660 440" stroke="#c53030" stroke-width="3" marker-end="url(#arrowred)"/>
+  
+  <rect x="200" y="440" width="920" height="100" fill="#fff" stroke="#c53030" stroke-width="2" rx="5"/>
+  <text x="660" y="465" font-size="14" font-weight="bold" text-anchor="middle" fill="#c53030">
+    AI Decision Making Process
+  </text>
+  <text x="660" y="485" font-size="11" text-anchor="middle" fill="#2d3748">
+    IF image_required = TRUE → Generate detailed prompts (100-150 words each)
+  </text>
+  <text x="660" y="502" font-size="10" text-anchor="middle" fill="#4a5568">
+    Includes: Subject, Context, Style, Composition, Colors (hex), Background, Lighting, Details, Quality
+  </text>
+  <text x="660" y="519" font-size="10" text-anchor="middle" fill="#4a5568">
+    Ensures: All options same style, No vague terms, Age-appropriate complexity
+  </text>
+  <text x="660" y="533" font-size="11" text-anchor="middle" fill="#2d3748">
+    IF image_required = FALSE → All prompts = null
+  </text>
+  
+  <path d="M 660 540 L 660 590" stroke="#c53030" stroke-width="3" marker-end="url(#arrowred)"/>
+  
+  <!-- Phase 3: Output -->
+  <rect x="50" y="590" width="1300" height="200" fill="#fffff0" stroke="#d69e2e" stroke-width="2" rx="10"/>
+  <text x="700" y="620" font-size="20" font-weight="bold" text-anchor="middle" fill="#975a16">
+    PHASE 3: JSON OUTPUT GENERATION
+  </text>
+  
+  <rect x="150" y="645" width="480" height="130" fill="#fefcbf" stroke="#d69e2e" stroke-width="2" rx="5"/>
+  <text x="390" y="665" font-size="12" font-weight="bold" text-anchor="middle" fill="#744210">Structured JSON Response</text>
+  <text x="200" y="685" font-size="10" text-anchor="start" fill="#744210">• question_id: 2010</text>
+  <text x="200" y="700" font-size="10" text-anchor="start" fill="#744210">• grade: 3</text>
+  <text x="200" y="715" font-size="10" text-anchor="start" fill="#744210">• image_required: true/false</text>
+  <text x="200" y="730" font-size="10" text-anchor="start" fill="#744210">• reason: "Detailed explanation..."</text>
+  <text x="200" y="745" font-size="10" text-anchor="start" fill="#744210">• question_image_prompt: "..." or null</text>
+  <text x="200" y="760" font-size="10" text-anchor="start" fill="#744210">• option_a/b/c/d_image_prompt: "..." or null</text>
+  
+  <rect x="680" y="645" width="580" height="130" fill="#f7fafc" stroke="#d69e2e" stroke-width="2" rx="5"/>
+  <text x="970" y="665" font-size="11" font-weight="bold" text-anchor="middle" fill="#744210">Example Detailed Prompt (100-150 words):</text>
+  <text x="970" y="683" font-size="8" text-anchor="middle" fill="#2d3748">"A bright pink (#FF69B4) spiral-bound planner with white</text>
+  <text x="970" y="696" font-size="8" text-anchor="middle" fill="#2d3748">pages, designed for teaching grade 3 students about time</text>
+  <text x="970" y="709" font-size="8" text-anchor="middle" fill="#2d3748">management. Flat illustration style with bold black outlines.</text>
+  <text x="970" y="722" font-size="8" text-anchor="middle" fill="#2d3748">Planner shown from 30-degree top-down angle, centered in</text>
+  <text x="970" y="735" font-size="8" text-anchor="middle" fill="#2d3748">frame, occupying 65% of image. Yellow pencil (#FFD700)</text>
+  <text x="970" y="748" font-size="8" text-anchor="middle" fill="#2d3748">diagonally across. White background. Soft diffused lighting.</text>
+  <text x="970" y="761" font-size="8" text-anchor="middle" fill="#2d3748">Child-friendly. 4K resolution, clean vector-style edges."</text>
+  
+  <path d="M 700 790 L 700 840" stroke="#d69e2e" stroke-width="3" marker-end="url(#arrowyellow)"/>
+  
+  <!-- Phase 4: Validation -->
+  <rect x="50" y="840" width="1300" height="150" fill="#f0fff4" stroke="#38a169" stroke-width="2" rx="10"/>
+  <text x="700" y="870" font-size="20" font-weight="bold" text-anchor="middle" fill="#22543d">
+    PHASE 4: VALIDATION &amp; QUALITY CHECK
+  </text>
+  
+  <rect x="150" y="895" width="300" height="80" fill="#9ae6b4" stroke="#38a169" stroke-width="2" rx="5"/>
+  <text x="300" y="915" font-size="12" font-weight="bold" text-anchor="middle" fill="#22543d">Prompt Quality Checks</text>
+  <text x="300" y="933" font-size="10" text-anchor="middle" fill="#22543d">✓ Word count (min 80 words)</text>
+  <text x="300" y="948" font-size="10" text-anchor="middle" fill="#22543d">✓ No vague terms detected</text>
+  <text x="300" y="963" font-size="10" text-anchor="middle" fill="#22543d">✓ Specific colors present</text>
+  
+  <rect x="500" y="895" width="300" height="80" fill="#c6f6d5" stroke="#38a169" stroke-width="2" rx="5"/>
+  <text x="650" y="915" font-size="12" font-weight="bold" text-anchor="middle" fill="#22543d">Fairness Validation</text>
+  <text x="650" y="933" font-size="10" text-anchor="middle" fill="#22543d">✓ All 4 options have images</text>
+  <text x="650" y="948" font-size="10" text-anchor="middle" fill="#22543d">✓ Consistent style across options</text>
+  <text x="650" y="963" font-size="10" text-anchor="middle" fill="#22543d">✓ No hints to correct answer</text>
+  
+  <rect x="850" y="895" width="400" height="80" fill="#f7fafc" stroke="#38a169" stroke-width="2" rx="5"/>
+  <text x="1050" y="915" font-size="12" font-weight="bold" text-anchor="middle" fill="#22543d">Console Warnings</text>
+  <text x="1050" y="933" font-size="9" text-anchor="middle" fill="#e53e3e">⚠️ Option A: Only 45 words (should be 100-150)</text>
+  <text x="1050" y="948" font-size="9" text-anchor="middle" fill="#e53e3e">⚠️ Contains vague terms: colorful, nice</text>
+  <text x="1050" y="963" font-size="9" text-anchor="middle" fill="#38a169">✅ All 4 options have images - Fair assessment</text>
+  
+  <path d="M 700 990 L 700 1040" stroke="#38a169" stroke-width="3" marker-end="url(#arrowgreen)"/>
+  
+  <!-- Phase 5: Database Storage -->
+  <rect x="50" y="1040" width="1300" height="150" fill="#ebf8ff" stroke="#3182ce" stroke-width="2" rx="10"/>
+  <text x="700" y="1070" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c5282">
+    PHASE 5: DATABASE STORAGE
+  </text>
+  
+  <rect x="200" y="1095" width="300" height="80" fill="#63b3ed" stroke="#3182ce" stroke-width="2" rx="5"/>
+  <text x="350" y="1118" font-size="12" font-weight="bold" text-anchor="middle" fill="white">save_to_database()</text>
+  <text x="350" y="1136" font-size="10" text-anchor="middle" fill="white">Table: question_visual_prompts</text>
+  <text x="350" y="1151" font-size="9" text-anchor="middle" fill="white">Stores all prompts + metadata</text>
+  <text x="350" y="1165" font-size="9" text-anchor="middle" fill="white">Returns: record_id</text>
+  
+  <path d="M 500 1135 L 570 1135" stroke="#3182ce" stroke-width="3" marker-end="url(#arrowblue)"/>
+  
+  <rect x="570" y="1095" width="580" height="80" fill="#f7fafc" stroke="#3182ce" stroke-width="2" rx="5"/>
+  <text x="860" y="1115" font-size="11" font-weight="bold" text-anchor="middle" fill="#2c5282">Stored Fields:</text>
+  <text x="860" y="1132" font-size="9" text-anchor="middle" fill="#4a5568">id, question_id, image_required, reason, question_image_prompt,</text>
+  <text x="860" y="1146" font-size="9" text-anchor="middle" fill="#4a5568">option_a_image_prompt, option_b_image_prompt,</text>
+  <text x="860" y="1160" font-size="9" text-anchor="middle" fill="#4a5568">option_c_image_prompt, option_d_image_prompt, created_at</text>
+  
+  <path d="M 700 1190 L 700 1240" stroke="#3182ce" stroke-width="3" marker-end="url(#arrowblue)"/>
+  
+  <!-- Phase 6: Image Generation -->
+  <rect x="50" y="1240" width="1300" height="280" fill="#faf5ff" stroke="#805ad5" stroke-width="2" rx="10"/>
+  <text x="700" y="1270" font-size="20" font-weight="bold" text-anchor="middle" fill="#553c9a">
+    PHASE 6: IMAGE GENERATION (External AI Models)
+  </text>
+  
+  <rect x="150" y="1290" width="250" height="70" fill="#d6bcfa" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="275" y="1315" font-size="13" font-weight="bold" text-anchor="middle" fill="#44337a">Fetch Prompts</text>
+  <text x="275" y="1333" font-size="10" text-anchor="middle" fill="#44337a">FROM database</text>
+  <text x="275" y="1348" font-size="10" text-anchor="middle" fill="#44337a">WHERE question_id = X</text>
+  
+  <path d="M 400 1325 L 470 1325" stroke="#805ad5" stroke-width="3" marker-end="url(#arrowpurple)"/>
+  
+  <rect x="470" y="1290" width="180" height="70" fill="#b794f4" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="560" y="1318" font-size="12" font-weight="bold" text-anchor="middle" fill="white">DALL-E 3</text>
+  <text x="560" y="1335" font-size="9" text-anchor="middle" fill="white">OpenAI</text>
+  <text x="560" y="1350" font-size="9" text-anchor="middle" fill="white">Generate images</text>
+  
+  <rect x="680" y="1290" width="180" height="70" fill="#b794f4" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="770" y="1318" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Midjourney</text>
+  <text x="770" y="1335" font-size="9" text-anchor="middle" fill="white">Discord API</text>
+  <text x="770" y="1350" font-size="9" text-anchor="middle" fill="white">Generate images</text>
+  
+  <rect x="890" y="1290" width="180" height="70" fill="#b794f4" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="980" y="1318" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Stable Diffusion</text>
+  <text x="980" y="1335" font-size="9" text-anchor="middle" fill="white">Local/API</text>
+  <text x="980" y="1350" font-size="9" text-anchor="middle" fill="white">Generate images</text>
+  
+  <rect x="1100" y="1290" width="180" height="70" fill="#b794f4" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="1190" y="1318" font-size="12" font-weight="bold" text-anchor="middle" fill="white">Other Models</text>
+  <text x="1190" y="1335" font-size="9" text-anchor="middle" fill="white">Firefly, Imagen, etc.</text>
+  <text x="1190" y="1350" font-size="9" text-anchor="middle" fill="white">Generate images</text>
+  
+  <path d="M 560 1360 L 560 1400" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 770 1360 L 770 1400" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 980 1360 L 980 1400" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 1190 1360 L 1190 1400" stroke="#805ad5" stroke-width="2"/>
+  
+  <path d="M 560 1400 L 700 1430" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 770 1400 L 700 1430" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 980 1400 L 700 1430" stroke="#805ad5" stroke-width="2"/>
+  <path d="M 1190 1400 L 700 1430" stroke="#805ad5" stroke-width="2"/>
+  
+  <rect x="400" y="1430" width="600" height="80" fill="#f7fafc" stroke="#805ad5" stroke-width="2" rx="5"/>
+  <text x="700" y="1455" font-size="13" font-weight="bold" text-anchor="middle" fill="#553c9a">Generated Images</text>
+  <text x="700" y="1473" font-size="10" text-anchor="middle" fill="#4a5568">Question Image + Option A, B, C, D Images</text>
+  <text x="700" y="1488" font-size="10" text-anchor="middle" fill="#4a5568">High resolution, consistent style, age-appropriate</text>
+  <text x="700" y="1503" font-size="10" text-anchor="middle" fill="#4a5568">Ready for educational use in exams</text>
+  
+  <path d="M 700 1510 L 700 1560" stroke="#805ad5" stroke-width="3" marker-end="url(#arrowpurple)"/>
+  
+  <!-- Phase 7: Final Output -->
+  <rect x="50" y="1560" width="1300" height="200" fill="#e6fffa" stroke="#319795" stroke-width="2" rx="10"/>
+  <text x="700" y="1590" font-size="20" font-weight="bold" text-anchor="middle" fill="#234e52">
+    PHASE 7: FINAL DEPLOYMENT
+  </text>
+  
+  <rect x="150" y="1615" width="300" height="130" fill="#81e6d9" stroke="#319795" stroke-width="2" rx="5"/>
+  <text x="300" y="1640" font-size="13" font-weight="bold" text-anchor="middle" fill="#234e52">Image Storage</text>
+  <text x="300" y="1660" font-size="10" text-anchor="middle" fill="#234e52">• Cloud Storage (AWS S3, etc.)</text>
+  <text x="300" y="1677" font-size="10" text-anchor="middle" fill="#234e52">• CDN for fast delivery</text>
+  <text x="300" y="1694" font-size="10" text-anchor="middle" fill="#234e52">• Image URLs stored in DB</text>
+  <text x="300" y="1711" font-size="10" text-anchor="middle" fill="#234e52">• Optimized for web/mobile</text>
+  <text x="300" y="1728" font-size="10" text-anchor="middle" fill="#234e52">• Multiple resolutions</text>
+  
+  <rect x="500" y="1615" width="350" height="130" fill="#b2f5ea" stroke="#319795" stroke-width="2" rx="5"/>
+  <text x="675" y="1640" font-size="13" font-weight="bold" text-anchor="middle" fill="#234e52">Integration Points</text>
+  <text x="675" y="1660" font-size="10" text-anchor="middle" fill="#234e52">• Frontend displays images in questions</text>
+  <text x="675" y="1677" font-size="10" text-anchor="middle" fill="#234e52">• Mobile app shows visual questions</text>
+  <text x="675" y="1694" font-size="10" text-anchor="middle" fill="#234e52">• PDF exports include images</text>
+  <text x="675" y="1711" font-size="10" text-anchor="middle" fill="#234e52">• Print materials ready</text>
+  <text x="675" y="1728" font-size="10" text-anchor="middle" fill="#234e52">• Analytics track engagement</text>
+  
+  <rect x="900" y="1615" width="380" height="130" fill="#f7fafc" stroke="#319795" stroke-width="2" rx="5"/>
+  <text x="1090" y="1640" font-size="13" font-weight="bold" text-anchor="middle" fill="#234e52">Student Experience</text>
+  <text x="1090" y="1660" font-size="10" text-anchor="middle" fill="#234e52">📱 Opens olympiad exam app</text>
+  <text x="1090" y="1677" font-size="10" text-anchor="middle" fill="#234e52">📖 Sees question with clear visual</text>
+  <text x="1090" y="1694" font-size="10" text-anchor="middle" fill="#234e52">🎨 All options have consistent images</text>
+  <text x="1090" y="1711" font-size="10" text-anchor="middle" fill="#234e52">✅ Better understanding &amp; engagement</text>
+  <text x="1090" y="1728" font-size="10" text-anchor="middle" fill="#234e52">🎯 Improved learning outcomes</text>
+  
+  <!-- Timeline on right -->
+  <!-- <rect x="1320" y="100" width="60" height="1660" fill="#f7fafc" stroke="#718096" stroke-width="1" rx="3"/>
+  <text x="1350" y="180" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 180)">~2s</text>
+  <text x="1350" y="410" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 410)">~3-5s</text>
+  <text x="1350" y="680" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 680)">~1s</text>
+  <text x="1350" y="915" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 915)">~0.5s</text>
+  <text x="1350" y="1115" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 1115)">~0.3s</text>
+  <text x="1350" y="1380" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 1380)">~30-60s</text>
+  <text x="1350" y="1670" font-size="10" font-weight="bold" text-anchor="middle" fill="#2d3748" transform="rotate(90 1350 1670)">Instant</text> -->
+  
+  <!-- Legend -->
+  <rect x="50" y="1800" width="1300" height="150" fill="#f7fafc" stroke="#4a5568" stroke-width="2" rx="10"/>
+  <text x="700" y="1830" font-size="18" font-weight="bold" text-anchor="middle" fill="#2d3748">
+    SYSTEM COMPONENTS LEGEND
+  </text>
+  
+  <rect x="100" y="1850" width="180" height="35" fill="#4299e1" stroke="#2b6cb0" rx="3"/>
+  <text x="190" y="1872" font-size="11" text-anchor="middle" fill="white">User Interface</text>
+  
+  <rect x="300" y="1850" width="180" height="35" fill="#48bb78" stroke="#2f855a" rx="3"/>
+  <text x="390" y="1872" font-size="11" text-anchor="middle" fill="white">Database Operations</text>
+  
+  <rect x="500" y="1850" width="180" height="35" fill="#fc8181" stroke="#c53030" rx="3"/>
+  <text x="590" y="1872" font-size="11" text-anchor="middle" fill="white">AI Processing</text>
+  
+  <rect x="700" y="1850" width="180" height="35" fill="#fbd38d" stroke="#d69e2e" rx="3"/>
+  <text x="790" y="1872" font-size="11" text-anchor="middle" fill="white">Data Output</text>
+  
+  <rect x="900" y="1850" width="180" height="35" fill="#9ae6b4" stroke="#38a169" rx="3"/>
+  <text x="990" y="1872" font-size="11" text-anchor="middle" fill="white">Validation</text>
+  
+  <rect x="1100" y="1850" width="180" height="35" fill="#b794f4" stroke="#805ad5" rx="3"/>
+  <text x="1190" y="1872" font-size="11" text-anchor="middle" fill="white">Image Generation</text>
+  
+  <text x="100" y="1915" font-size="12" font-weight="bold" text-anchor="start" fill="#2d3748">Key Features:</text>
+  <text x="100" y="1932" font-size="10" text-anchor="start" fill="#4a5568">• Model-agnostic prompts (works with any AI image generator)</text>
+  <text x="500" y="1932" font-size="10" text-anchor="start" fill="#4a5568">• Grade-specific analysis (Ages 6-15)</text>
+  <text x="900" y="1932" font-size="10" text-anchor="start" fill="#4a5568">• 100-150 word detailed prompts</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowblue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2b6cb0" />
+    </marker>
+    <marker id="arrowgreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#2f855a" />
+    </marker>
+    <marker id="arrowred" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#c53030" />
+    </marker>
+    <marker id="arrowyellow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#d69e2e" />
+    </marker>
+    <marker id="arrowpurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#805ad5" />
+    </marker>
+  </defs>
+
+</svg>
